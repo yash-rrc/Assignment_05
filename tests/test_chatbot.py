@@ -6,7 +6,7 @@ Usage:it will verufy the excution of evry function written in the chtbot.py file
 """
 import unittest
 from unittest.mock import patch
-from src.chatbot import get_account, VALID_TASKS, ACCOUNTS, get_amount
+from src.chatbot import get_account, VALID_TASKS, ACCOUNTS, get_amount,get_balance
 
 class ChatbotTests(unittest.TestCase):
     def test_get_account(self):
@@ -56,4 +56,19 @@ class ChatbotTests(unittest.TestCase):
                 get_amount()
             # Assert
             self.assertEqual(str(context.exception), "Invalid amount. Please enter a positive number.")
+    
+    def test_get_balance_valid(self):
+        #Act
+        with patch("builtins.input", side_effect=["123456"]):
+            balance_info = get_balance(int(input("Enter account number: ")))
+            expected_output = 'Your current balance for account 123456 is $1000.00.'
+            # Assert
+            self.assertEqual(balance_info, expected_output)
 
+    def test_get_balance_noaccount(self):
+        #Act
+        with patch("builtins.input", return_value="112233"):  # Input an account number not in ACCOUNTS
+            with self.assertRaises(Exception) as context:
+                get_balance(int(input("Enter account number: ")))
+        # Assert
+        self.assertEqual(str(context.exception), "Account number does not exist.")
