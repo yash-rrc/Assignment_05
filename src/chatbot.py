@@ -27,6 +27,32 @@ def get_account():
         except ValueError:
             raise ValueError("Account number must be a whole number.")
 
+def get_amount() -> float:
+    """
+    gives output of the ebntered amount the usr enters 
+
+    Returns:
+        float: The entered amount
+
+    Raises:
+        ValueError: If the entered amount is not numeric it gives error 
+    """
+    while True:
+        try:
+            amount_string = input("Enter the transaction amount: ")
+
+            try:
+                amount = float(amount_string)
+            except ValueError:
+                raise ValueError("Invalid amount. Amount must be numeric.")
+
+            if amount <= 0:
+                raise ValueError("Invalid amount. Please enter a positive number.")
+
+            return amount
+
+        except ValueError as error:
+            raise(error)
 
 
 
