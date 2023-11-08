@@ -85,6 +85,17 @@ def make_deposit(account: int, amount: float) -> str:
 
     return f"You have made a deposit of ${amount:.2f} to account {account}."
 
+def user_selection() -> str:
+    VALID_TASKS = ["balance", "deposit", "exit"]
+    
+    while True:
+        task = input("What would you like to do (balance/deposit/exit)? ").lower()
+
+        if task in VALID_TASKS:
+            return task
+        else:
+            raise ValueError("Invalid task. Please choose balance, deposit, or exit.")
+
 
 
 ## GIVEN CHATBOT FUNCTION

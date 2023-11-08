@@ -6,7 +6,7 @@ Usage:it will verufy the excution of evry function written in the chtbot.py file
 """
 import unittest
 from unittest.mock import patch
-from src.chatbot import get_account, VALID_TASKS, ACCOUNTS, get_amount,get_balance , make_deposit
+from src.chatbot import get_account, VALID_TASKS, ACCOUNTS, get_amount,get_balance , make_deposit,user_selection
 
 class ChatbotTests(unittest.TestCase):
     def test_get_account(self):
@@ -102,4 +102,36 @@ class ChatbotTests(unittest.TestCase):
             make_deposit(account_number, deposit_amount)
         #Assert
         self.assertEqual(str(context.exception), "Account number does not exist.")
+    
+    def test_make_deposit_negative(self):
+        # Arrange
+        account_number = 123456
+        deposit_amount = -50.01
+        # Act
+        with self.assertRaises(ValueError) as context:
+            make_deposit(account_number, deposit_amount)
+        # Assert
+        self.assertEqual(str(context.exception), "Invalid Amount. Amount must be positive.")
+
+    def test_user_selection_lower(self):
+        # Act
+        with patch("builtins.input", return_value="balance"):
+            result = user_selection()
+            # Assert
+            self.assertEqual(result, "balance")
+
+    def test_user_selection_mixed_(self):
+        # Act
+        with patch("builtins.input", return_value="DePosiT"):
+            result = user_selection()
+            # Assert
+            self.assertEqual(result, "deposit")
+
+    def test_user_selection_invalid(self):
+        # Act
+        with patch("builtins.input", return_value="invalid_selection"):
+            with self.assertRaises(ValueError) as context:
+                user_selection()
+            # Assert
+            self.assertEqual(str(context.exception), "Invalid task. Please choose balance, deposit, or exit.")
 
