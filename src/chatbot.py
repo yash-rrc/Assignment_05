@@ -16,6 +16,16 @@ ACCOUNTS = {
 VALID_TASKS = {"balance", "deposit", "exit"}
 
 ## CODE REQUIRED FUNCTIONS STARTING HERE:
+def get_account():
+    while True:    
+        try:
+            account_number = int(input("Please enter your account number: "))
+            if account_number in ACCOUNTS:
+                return account_number
+            else:
+                raise Exception("Account number entered does not exist.")
+        except ValueError:
+            raise ValueError("Account number must be a whole number.")
 
 
 
